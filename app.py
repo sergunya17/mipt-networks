@@ -38,11 +38,11 @@ def model_predict(model, image):
     pred_score = list(pred[0]['scores'].detach().numpy())
 
     indices = batched_nms(pred[0]['boxes'], pred[0]['scores'], pred[0]['labels'], NMS_THRESHOLD).numpy()
-    pred_idexs = [i for i, score in enumerate(pred_score) if score > SCORE_THRESHOLD and i in indices]
+    pred_indexes = [i for i, score in enumerate(pred_score) if score > SCORE_THRESHOLD and i in indices]
 
-    pred_class = [pred_class[i] for i in pred_idexs]
-    pred_boxes = [pred_boxes[i] for i in pred_idexs]
-    pred_score = [pred_score[i] for i in pred_idexs]
+    pred_class = [pred_class[i] for i in pred_indexes]
+    pred_boxes = [pred_boxes[i] for i in pred_indexes]
+    pred_score = [pred_score[i] for i in pred_indexes]
 
     return pred_class, pred_boxes, pred_score
 
@@ -53,8 +53,8 @@ def make_response(pred_class, pred_boxes, pred_score):
     for i in range(count_objects):
         object_dict = {
             'ObjectClassName': pred_class[i],
-            'Height': round(pred_boxes[i][2]) - round(pred_boxes[i][0]),
-            'Width': round(pred_boxes[i][3]) - round(pred_boxes[i][1]),
+            'Height': round(pred_boxes[i][3]) - round(pred_boxes[i][1]),
+            'Width': round(pred_boxes[i][2]) - round(pred_boxes[i][0]),
             'Score': float(pred_score[i]),
             'X': round(pred_boxes[i][0]),
             'Y': round(pred_boxes[i][1]),
