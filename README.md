@@ -3,6 +3,6 @@
 ## Запуск
 
 ```bash
-pip install -r requirements.txt
-python app.py
+docker build -t flask-nn-app .
+docker run -p 5555:5555 flask-nn-app
 ```
