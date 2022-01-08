@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  nn-app:
+    container_name: nn-app
+    build: nn-app/
+    restart: always
+    command: python app.py
+    ports:
+      - "5555:5555"
+    networks:
+      - internal
+
+  backend-app:
+    container_name: backend-app
+    build: backend-app/
+    restart: always
+    command: sh -c "./wait-for-it.sh nn-app:5555 -t 0 -- python app.py"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - nn-app
+    networks:
+      internal:
+      external:
+        ipv4_address: 172.200.17.30
+
+networks:
+  external:
+    name: external
+    ipam:
+      config:
+        - subnet: 172.200.17.28/30
+  internal:
+    name: internal

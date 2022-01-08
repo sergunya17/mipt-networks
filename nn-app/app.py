@@ -62,7 +62,7 @@ def make_response(pred_class, pred_boxes, pred_score):
         objects.append(object_dict)
 
     response = {
-        'Successful': count_objects > 0,
+        'Successful': True,
         'Objects': objects,
         'ObjectCount': count_objects,
     }
